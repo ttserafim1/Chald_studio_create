@@ -36,10 +36,21 @@
             cursor: pointer;
             font-size: 18px;
             transition: transform 0.3s ease, background 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         button:hover {
             background: linear-gradient(45deg, #ff4b2b, #ff416c);
             transform: scale(1.1);
+        }
+        button.sending {
+            background: none;
+            font-size: 0;
+            width: 40px;
+            height: 40px;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/295/295128.png');
+            background-size: cover;
+            animation: flyAway 1s ease-out;
         }
         input, select {
             width: 100%;
@@ -56,17 +67,25 @@
             box-shadow: 0 0 10px rgba(255, 75, 75, 0.8);
             outline: none;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        @keyframes flyAway {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); opacity: 0; }
+        }
+        .marquee {
             width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            position: absolute;
+            bottom: 10px;
+            font-size: 18px;
         }
-        .hidden {
-            display: none;
+        .marquee span {
+            display: inline-block;
+            animation: marquee 10s linear infinite;
         }
-        .visible {
-            display: block;
+        @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
         }
     </style>
 </head>
@@ -90,32 +109,28 @@
                     </select>
                 </label>
                 <label>Какие моды вам интересны? <input type="text" id="favoriteMods"></label>
-                <button type="submit">Отправить</button>
+                <button type="submit" id="submitButton">Отправить</button>
             </form>
         </div>
+    </div>
+    <div class="marquee">
+        <span>Наш Telegram: <a href="https://t.me/tt_serafim_1_family" target="_blank">https://t.me/tt_serafim_1_family</a></span>
     </div>
     <script>
         function toggleForm() {
             let form = document.getElementById('formContainer');
             form.classList.toggle('hidden');
-            form.classList.toggle('visible');
         }
-        
         document.getElementById('applicationForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            let nickname = document.getElementById('nickname').value.replace(/_/g, '\\_');
-            let name = document.getElementById('name').value.replace(/_/g, '\\_');
-            let age = document.getElementById('age').value;
-            let tgTag = document.getElementById('tgTag').value.replace(/_/g, '\\_');
-            let discord = document.getElementById('discord').value.replace(/_/g, '\\_');
-            let experience = document.getElementById('experience').value;
-            let pastProjects = document.getElementById('pastProjects').value;
-            let favoriteMods = document.getElementById('favoriteMods').value.replace(/_/g, '\\_');
+            let submitButton = document.getElementById('submitButton');
+            submitButton.classList.add('sending');
+            setTimeout(() => submitButton.style.display = 'none', 1000);
             
-            let botToken = "YOUR_BOT_TOKEN";
-            let chatId = "YOUR_CHAT_ID";
-            let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${nickname}\n📛 *Имя:* ${name}\n🎂 *Возраст:* ${age}\n📱 *Telegram:* @${tgTag}\n🎧 *Discord:* ${discord}\n🎮 *Опыт в Minecraft:* ${experience} лет\n🏗 *Играл в другие проекты:* ${pastProjects}\n⚙ *Интересные моды:* ${favoriteMods}`;
-
+            let botToken = "7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcLcArUuG8s";
+            let chatId = "6459484783";
+            let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${document.getElementById('nickname').value}\n📛 *Имя:* ${document.getElementById('name').value}\n🎂 *Возраст:* ${document.getElementById('age').value}\n📱 *Telegram:* @${document.getElementById('tgTag').value}\n🎧 *Discord:* ${document.getElementById('discord').value}\n🎮 *Опыт в Minecraft:* ${document.getElementById('experience').value} лет\n🏗 *Играл в другие проекты:* ${document.getElementById('pastProjects').value}\n⚙ *Интересные моды:* ${document.getElementById('favoriteMods').value}`;
+            
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
