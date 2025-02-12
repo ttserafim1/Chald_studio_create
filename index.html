@@ -71,22 +71,6 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.6);
         }
-        .marquee {
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            position: relative;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-        .marquee span {
-            display: inline-block;
-            animation: marquee 10s linear infinite;
-        }
-        @keyframes marquee {
-            from { transform: translateX(100%); }
-            to { transform: translateX(-100%); }
-        }
     </style>
 </head>
 <body>
@@ -94,21 +78,20 @@
     <div class="container">
         <h2>Подача заявки</h2>
         <button onclick="toggleForm()">Подать заявку</button>
-        <div class="marquee"><span>Наш Telegram: <a href="https://t.me/tt_serafim_1_family" target="_blank">https://t.me/tt_serafim_1_family</a></span></div>
         <div id="formContainer" class="hidden">
             <form id="applicationForm">
                 <label>Ник: <input type="text" id="nickname" required></label>
                 <label>Имя: <input type="text" id="name" required></label>
                 <label>Возраст: <input type="number" id="age" required></label>
-                <label>Ваш ник в Telegram (без @, используйте "\\_" для подчёркиваний): <input type="text" id="tgTag" required></label>
+                <label>Ваш ник в Telegram (без @): <input type="text" id="tgTag" required></label>
                 <label>Дискорд: <input type="text" id="discord" required></label>
                 <label>Опыт в Minecraft (лет): <input type="number" id="experience" required></label>
-                <label>Вы играли в другие проекты? </label>
-                <div>
-                    <button type="button" onclick="selectOption('Нет')">Нет</button>
-                    <button type="button" onclick="selectOption('Да')">Да</button>
-                </div>
-                <input type="hidden" id="pastProjects" value="Нет">
+                <label>Вы играли в другие проекты? 
+                    <select id="pastProjects">
+                        <option value="Нет">Нет</option>
+                        <option value="Да">Да</option>
+                    </select>
+                </label>
                 <label>Какие моды вам интересны? <input type="text" id="favoriteMods"></label>
                 <button type="submit">Отправить</button>
             </form>
@@ -121,15 +104,12 @@
             let form = document.getElementById('formContainer');
             form.classList.toggle('hidden');
         }
-        function selectOption(value) {
-            document.getElementById('pastProjects').value = value;
-        }
         document.getElementById('applicationForm').addEventListener('submit', function(event) {
             event.preventDefault();
             let tgTag = document.getElementById('tgTag').value.replace(/_/g, '\\_');
             let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${document.getElementById('nickname').value}\n📛 *Имя:* ${document.getElementById('name').value}\n🎂 *Возраст:* ${document.getElementById('age').value}\n📱 *Telegram:* @${tgTag}\n🎧 *Discord:* ${document.getElementById('discord').value}\n🎮 *Опыт в Minecraft:* ${document.getElementById('experience').value} лет\n🏗 *Играл в другие проекты:* ${document.getElementById('pastProjects').value}\n⚙ *Интересные моды:* ${document.getElementById('favoriteMods').value}`;
             
-            fetch(`https://api.telegram.org/bot7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcArUuG8s/sendMessage`, {
+            fetch(`https://api.telegram.org/bot7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcLcArUuG8s/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: "6962439559", text: message, parse_mode: "MarkdownV2" })
