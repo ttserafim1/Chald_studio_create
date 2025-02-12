@@ -97,25 +97,20 @@
     <script>
         function toggleForm() {
             let form = document.getElementById('formContainer');
-            if (form.classList.contains('hidden')) {
-                form.classList.remove('hidden');
-                form.classList.add('visible');
-            } else {
-                form.classList.remove('visible');
-                form.classList.add('hidden');
-            }
+            form.classList.toggle('hidden');
+            form.classList.toggle('visible');
         }
         
         document.getElementById('applicationForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            let nickname = document.getElementById('nickname').value;
-            let name = document.getElementById('name').value;
+            let nickname = document.getElementById('nickname').value.replace(/_/g, '\\_');
+            let name = document.getElementById('name').value.replace(/_/g, '\\_');
             let age = document.getElementById('age').value;
-            let tgTag = document.getElementById('tgTag').value;
-            let discord = document.getElementById('discord').value;
+            let tgTag = document.getElementById('tgTag').value.replace(/_/g, '\\_');
+            let discord = document.getElementById('discord').value.replace(/_/g, '\\_');
             let experience = document.getElementById('experience').value;
             let pastProjects = document.getElementById('pastProjects').value;
-            let favoriteMods = document.getElementById('favoriteMods').value;
+            let favoriteMods = document.getElementById('favoriteMods').value.replace(/_/g, '\\_');
             
             let botToken = "YOUR_BOT_TOKEN";
             let chatId = "YOUR_CHAT_ID";
