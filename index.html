@@ -129,7 +129,7 @@
             let tgTag = document.getElementById('tgTag').value.replace(/_/g, '\\_');
             let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${document.getElementById('nickname').value}\n📛 *Имя:* ${document.getElementById('name').value}\n🎂 *Возраст:* ${document.getElementById('age').value}\n📱 *Telegram:* @${tgTag}\n🎧 *Discord:* ${document.getElementById('discord').value}\n🎮 *Опыт в Minecraft:* ${document.getElementById('experience').value} лет\n🏗 *Играл в другие проекты:* ${document.getElementById('pastProjects').value}\n⚙ *Интересные моды:* ${document.getElementById('favoriteMods').value}`;
             
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            fetch(`https://api.telegram.org/bot${7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcLcArUuG8s}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: "6962439559", text: message, parse_mode: "MarkdownV2" })
