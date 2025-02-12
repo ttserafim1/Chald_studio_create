@@ -107,6 +107,23 @@
         function selectOption(value) {
             document.getElementById('pastProjects').value = value;
         }
+        document.getElementById('applicationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${document.getElementById('nickname').value}\n📛 *Имя:* ${document.getElementById('name').value}\n🎂 *Возраст:* ${document.getElementById('age').value}\n📱 *Telegram:* @${document.getElementById('tgTag').value}\n🎧 *Discord:* ${document.getElementById('discord').value}\n🎮 *Опыт в Minecraft:* ${document.getElementById('experience').value} лет\n🏗 *Играл в другие проекты:* ${document.getElementById('pastProjects').value}\n⚙ *Интересные моды:* ${document.getElementById('favoriteMods').value}`;
+            
+            let botToken = "YOUR_BOT_TOKEN";
+            let chatId = "YOUR_CHAT_ID";
+            
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "Markdown" })
+            }).then(() => {
+                alert('Заявка отправлена!');
+            }).catch(() => {
+                alert('Ошибка отправки заявки!');
+            });
+        });
     </script>
 </body>
 </html>
