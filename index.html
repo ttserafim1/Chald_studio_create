@@ -17,7 +17,7 @@
             animation: fadeIn 1s ease-in;
         }
         .container {
-            max-width: 600px;
+            max-width: 90%;
             margin: 50px auto;
             background: rgba(40, 40, 40, 0.95);
             padding: 30px;
@@ -36,8 +36,6 @@
             cursor: pointer;
             font-size: 18px;
             transition: transform 0.3s ease, background 0.3s;
-            position: relative;
-            overflow: hidden;
         }
         button:hover {
             background: linear-gradient(45deg, #ff4b2b, #ff416c);
@@ -58,6 +56,12 @@
             box-shadow: 0 0 10px rgba(255, 75, 75, 0.8);
             outline: none;
         }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
         .hidden {
             display: none;
         }
@@ -73,19 +77,19 @@
         <button onclick="toggleForm()">Подать заявку</button>
         <div id="formContainer" class="hidden">
             <form id="applicationForm">
-                <label>Ник: <input type="text" id="nickname" required></label><br>
-                <label>Имя: <input type="text" id="name" required></label><br>
-                <label>Возраст: <input type="number" id="age" required></label><br>
-                <label>Тег TG: <input type="text" id="tgTag" required></label><br>
-                <label>Дискорд: <input type="text" id="discord" required></label><br>
-                <label>Опыт в Minecraft (лет): <input type="number" id="experience" required></label><br>
+                <label>Ник: <input type="text" id="nickname" required></label>
+                <label>Имя: <input type="text" id="name" required></label>
+                <label>Возраст: <input type="number" id="age" required></label>
+                <label>Тег TG: <input type="text" id="tgTag" required></label>
+                <label>Дискорд: <input type="text" id="discord" required></label>
+                <label>Опыт в Minecraft (лет): <input type="number" id="experience" required></label>
                 <label>Вы играли в другие проекты? 
                     <select id="pastProjects">
                         <option value="Нет">Нет</option>
                         <option value="Да">Да</option>
                     </select>
-                </label><br>
-                <label>Какие моды вам интересны? <input type="text" id="favoriteMods"></label><br>
+                </label>
+                <label>Какие моды вам интересны? <input type="text" id="favoriteMods"></label>
                 <button type="submit">Отправить</button>
             </form>
         </div>
@@ -113,8 +117,8 @@
             let pastProjects = document.getElementById('pastProjects').value;
             let favoriteMods = document.getElementById('favoriteMods').value;
             
-            let botToken = "7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcLcArUuG8s";
-            let chatId = "6962439559";
+            let botToken = "YOUR_BOT_TOKEN";
+            let chatId = "YOUR_CHAT_ID";
             let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${nickname}\n📛 *Имя:* ${name}\n🎂 *Возраст:* ${age}\n📱 *Telegram:* @${tgTag}\n🎧 *Discord:* ${discord}\n🎮 *Опыт в Minecraft:* ${experience} лет\n🏗 *Играл в другие проекты:* ${pastProjects}\n⚙ *Интересные моды:* ${favoriteMods}`;
 
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -122,11 +126,6 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "Markdown" })
             }).then(() => {
-                fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ chat_id: chatId, text: "Здравствуйте, ваша заявка была принята! Вот логин и пароль от сети Hamachi:\n\n🔑 Логин: cat201386\n🔒 Пароль: cat201386" })
-                });
                 alert('Заявка отправлена!');
             });
         });
