@@ -59,14 +59,17 @@
             outline: none;
         }
         .hidden { display: none; }
-        .option-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin: 10px 0;
+        .status-message {
+            margin-top: 10px;
+            color: #ff416c;
+            font-size: 18px;
         }
-        .option-buttons button {
-            flex: 1;
-            margin: 5px;
+        .version {
+            position: fixed;
+            left: 10px;
+            bottom: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
@@ -80,11 +83,11 @@
                 <label>Ник: <input type="text" id="nickname" required></label>
                 <label>Имя: <input type="text" id="name" required></label>
                 <label>Возраст: <input type="number" id="age" required></label>
-                <label>Тег TG: <input type="text" id="tgTag" required></label>
+                <label>Ваш ник в Telegram (без @): <input type="text" id="tgTag" required></label>
                 <label>Дискорд: <input type="text" id="discord" required></label>
                 <label>Опыт в Minecraft (лет): <input type="number" id="experience" required></label>
                 <label>Вы играли в другие проекты? </label>
-                <div class="option-buttons">
+                <div>
                     <button type="button" onclick="selectOption('Нет')">Нет</button>
                     <button type="button" onclick="selectOption('Да')">Да</button>
                 </div>
@@ -92,17 +95,14 @@
                 <label>Какие моды вам интересны? <input type="text" id="favoriteMods"></label>
                 <button type="submit">Отправить</button>
             </form>
+            <p id="statusMessage" class="status-message"></p>
         </div>
     </div>
-    <div class="marquee" id="telegramLink">
-        <span>Наш Telegram: <a href="https://t.me/tt_serafim_1_family" target="_blank">https://t.me/tt_serafim_1_family</a></span>
-    </div>
+    <div class="version">Версия 1.0</div>
     <script>
         function toggleForm() {
             let form = document.getElementById('formContainer');
-            let telegram = document.getElementById('telegramLink');
             form.classList.toggle('hidden');
-            telegram.classList.toggle('hidden');
         }
         function selectOption(value) {
             document.getElementById('pastProjects').value = value;
@@ -120,9 +120,9 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "Markdown" })
             }).then(() => {
-                alert('Заявка отправлена!');
+                document.getElementById('statusMessage').innerText = 'Заявка успешно отправлена!';
             }).catch(() => {
-                alert('Ошибка отправки заявки!');
+                document.getElementById('statusMessage').innerText = 'Ошибка отправки заявки!';
             });
         });
     </script>
