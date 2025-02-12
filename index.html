@@ -114,6 +114,9 @@
                 
                 <label for="telegram">Ваш телеграм тег (@username):</label>
                 <input type="text" id="telegram" name="telegram" required>
+                
+                <label for="about">Расскажите о себе:</label>
+                <input type="text" id="about" name="about" required>
 
                 <button type="submit">Отправить заявку</button>
             </form>
@@ -131,6 +134,19 @@
     <script>
         document.getElementById('toggleForm').addEventListener('click', function() {
             document.getElementById('formContainer').classList.toggle('hidden');
+        });
+
+        document.getElementById('applicationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('responseMessage').innerText = data.message;
+            });
         });
     </script>
 </body>
