@@ -43,16 +43,7 @@
             background: linear-gradient(45deg, #ff4b2b, #ff416c);
             transform: scale(1.1);
         }
-        button.sending {
-            background: none;
-            font-size: 0;
-            width: 40px;
-            height: 40px;
-            background-image: url('https://cdn-icons-png.flaticon.com/512/295/295128.png');
-            background-size: cover;
-            animation: flyAway 1s ease-out;
-        }
-        input, select {
+        input {
             width: 100%;
             padding: 12px;
             margin: 8px 0;
@@ -63,29 +54,19 @@
             font-size: 16px;
             transition: box-shadow 0.3s;
         }
-        input:focus, select:focus {
+        input:focus {
             box-shadow: 0 0 10px rgba(255, 75, 75, 0.8);
             outline: none;
         }
-        @keyframes flyAway {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-100px); opacity: 0; }
+        .hidden { display: none; }
+        .option-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
         }
-        .marquee {
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            position: absolute;
-            bottom: 10px;
-            font-size: 18px;
-        }
-        .marquee span {
-            display: inline-block;
-            animation: marquee 10s linear infinite;
-        }
-        @keyframes marquee {
-            from { transform: translateX(100%); }
-            to { transform: translateX(-100%); }
+        .option-buttons button {
+            flex: 1;
+            margin: 5px;
         }
     </style>
 </head>
@@ -102,43 +83,30 @@
                 <label>Тег TG: <input type="text" id="tgTag" required></label>
                 <label>Дискорд: <input type="text" id="discord" required></label>
                 <label>Опыт в Minecraft (лет): <input type="number" id="experience" required></label>
-                <label>Вы играли в другие проекты? 
-                    <select id="pastProjects">
-                        <option value="Нет">Нет</option>
-                        <option value="Да">Да</option>
-                    </select>
-                </label>
+                <label>Вы играли в другие проекты? </label>
+                <div class="option-buttons">
+                    <button type="button" onclick="selectOption('Нет')">Нет</button>
+                    <button type="button" onclick="selectOption('Да')">Да</button>
+                </div>
+                <input type="hidden" id="pastProjects" value="Нет">
                 <label>Какие моды вам интересны? <input type="text" id="favoriteMods"></label>
-                <button type="submit" id="submitButton">Отправить</button>
+                <button type="submit">Отправить</button>
             </form>
         </div>
     </div>
-    <div class="marquee">
+    <div class="marquee" id="telegramLink">
         <span>Наш Telegram: <a href="https://t.me/tt_serafim_1_family" target="_blank">https://t.me/tt_serafim_1_family</a></span>
     </div>
     <script>
         function toggleForm() {
             let form = document.getElementById('formContainer');
+            let telegram = document.getElementById('telegramLink');
             form.classList.toggle('hidden');
+            telegram.classList.toggle('hidden');
         }
-        document.getElementById('applicationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            let submitButton = document.getElementById('submitButton');
-            submitButton.classList.add('sending');
-            setTimeout(() => submitButton.style.display = 'none', 1000);
-            
-            let botToken = "7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcLcArUuG8s";
-            let chatId = "6459484783";
-            let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${document.getElementById('nickname').value}\n📛 *Имя:* ${document.getElementById('name').value}\n🎂 *Возраст:* ${document.getElementById('age').value}\n📱 *Telegram:* @${document.getElementById('tgTag').value}\n🎧 *Discord:* ${document.getElementById('discord').value}\n🎮 *Опыт в Minecraft:* ${document.getElementById('experience').value} лет\n🏗 *Играл в другие проекты:* ${document.getElementById('pastProjects').value}\n⚙ *Интересные моды:* ${document.getElementById('favoriteMods').value}`;
-            
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "Markdown" })
-            }).then(() => {
-                alert('Заявка отправлена!');
-            });
-        });
+        function selectOption(value) {
+            document.getElementById('pastProjects').value = value;
+        }
     </script>
 </body>
 </html>
