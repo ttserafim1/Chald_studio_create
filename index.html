@@ -89,18 +89,6 @@
             font-size: 24px;
             margin-bottom: 20px;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        @keyframes slideLetters {
-            0% { opacity: 0; transform: translateY(-30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
@@ -113,7 +101,9 @@
                 <label>Ник: <input type="text" id="nickname" required></label><br>
                 <label>Имя: <input type="text" id="name" required></label><br>
                 <label>Возраст: <input type="number" id="age" required></label><br>
-                <label>Тег телеграмм пример: "@username" <input type="text" id="tgTag" required></label><br>
+                <label>Тег TG: <input type="text" id="tgTag" required></label><br>
+                <label>Дискорд: <input type="text" id="discord" required></label><br>
+                <label>Опыт игры в Minecraft (лет): <input type="number" id="experience" required></label><br>
                 <button type="submit">Отправить</button>
             </form>
         </div>
@@ -130,16 +120,23 @@
             let name = document.getElementById('name').value;
             let age = document.getElementById('age').value;
             let tgTag = document.getElementById('tgTag').value;
+            let discord = document.getElementById('discord').value;
+            let experience = document.getElementById('experience').value;
             
             let botToken = "7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcLcArUuG8s";
             let chatId = "6962439559";
-            let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${nickname}\n📛 *Имя:* ${name}\n🎂 *Возраст:* ${age}\n📱 *Telegram:* @${tgTag}`;
+            let message = `📩 *Новая заявка на Chald Studio Create*\n\n👤 *Ник:* ${nickname}\n📛 *Имя:* ${name}\n🎂 *Возраст:* ${age}\n📱 *Telegram:* @${tgTag}\n🎧 *Discord:* ${discord}\n🎮 *Опыт в Minecraft:* ${experience} лет`;
             
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "Markdown" })
             }).then(() => {
+                fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ chat_id: chatId, text: "Здраствуйте, ваша заявка была принята! Вот логин и пароль от сети Hamachi:\n\n🔑 Логин: cat201386\n🔒 Пароль: cat201386" })
+                });
                 alert('Заявка отправлена!');
             });
         });
