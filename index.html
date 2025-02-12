@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Ванила +</title>
+    <title>Chald Studio Набор в видео</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -89,7 +89,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Create Ванила +</h1>
+            <h1>Chald Studio Набор в видео</h1>
         </header>
         <main>
             <h2>Форма заявки</h2>
@@ -135,8 +135,8 @@
             const userMessage = `Спасибо за заявку, ${nickname}! Мы скоро с вами свяжемся.`;
             
             try {
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`);
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${telegram}&text=${userMessage}`);
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}&reply_markup=${encodeURIComponent(JSON.stringify({inline_keyboard: [[{text: "Принять", callback_data: `accept_${telegram}`}, {text: "Отклонить", callback_data: `reject_${telegram}`}]]}))}`);
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=@${telegram}&text=${userMessage}`);
                 document.getElementById('responseMessage').textContent = '✅ Заявка успешно отправлена!';
             } catch (error) {
                 document.getElementById('responseMessage').textContent = '❌ Ошибка при отправке заявки.';
