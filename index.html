@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chald Studio Набор в видео</title>
+    <title>Chald Studio Create</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -13,18 +13,17 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
+            text-align: center;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
             background: #1e1e1e;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            text-align: center;
             animation: fadeIn 1s ease-in-out;
         }
 
@@ -35,6 +34,10 @@
 
         h1, h2 {
             font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
         }
 
         form {
@@ -58,11 +61,6 @@
             transition: 0.3s;
         }
 
-        input:focus {
-            outline: none;
-            background: #333;
-        }
-
         button {
             padding: 12px;
             background: linear-gradient(45deg, #4caf50, #2e7d32);
@@ -75,23 +73,20 @@
             transition: 0.3s;
         }
 
-        button:hover {
-            background: linear-gradient(45deg, #66bb6a, #388e3c);
-        }
-
-        #responseMessage {
-            margin-top: 15px;
-            font-size: 16px;
-            font-weight: bold;
+        #video-section {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Chald Studio Набор в видео</h1>
+            <h1>Chald Studio Create</h1>
         </header>
-        <main>
+        
+        <button id="toggleForm">Подать заявку</button>
+        
+        <div id="formContainer" class="hidden">
             <h2>Форма заявки</h2>
             <form id="applicationForm">
                 <label for="nickname">Ваш ник:</label>
@@ -109,38 +104,17 @@
                 <button type="submit">Отправить заявку</button>
             </form>
             <div id="responseMessage"></div>
-        </main>
+        </div>
+    </div>
+    
+    <div id="video-section">
+        <h2>Вышедшие видео</h2>
+        <p>Информация не найдена</p>
     </div>
     
     <script>
-        const sentApplications = new Set();
-        document.getElementById('applicationForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const nickname = document.getElementById('nickname').value;
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const telegram = document.getElementById('telegram').value;
-            
-            if (sentApplications.has(nickname)) {
-                document.getElementById('responseMessage').textContent = '❌ Вы уже отправили заявку!';
-                return;
-            }
-
-            sentApplications.add(nickname);
-            
-            const botToken = '7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcLcArUuG8s';
-            const chatId = '6962439559';
-            const message = `Новая заявка!%0AНик: ${nickname}%0AИмя: ${name}%0AВозраст: ${age}%0AТелеграм: ${telegram}`;
-            const userMessage = `Спасибо за заявку, ${nickname}! Мы скоро с вами свяжемся.`;
-            
-            try {
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}&reply_markup=${encodeURIComponent(JSON.stringify({inline_keyboard: [[{text: "Принять", callback_data: `accept_${telegram}`}, {text: "Отклонить", callback_data: `reject_${telegram}`}]]}))}`);
-                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=@${telegram}&text=${userMessage}`);
-                document.getElementById('responseMessage').textContent = '✅ Заявка успешно отправлена!';
-            } catch (error) {
-                document.getElementById('responseMessage').textContent = '❌ Ошибка при отправке заявки.';
-            }
+        document.getElementById('toggleForm').addEventListener('click', function() {
+            document.getElementById('formContainer').classList.toggle('hidden');
         });
     </script>
 </body>
