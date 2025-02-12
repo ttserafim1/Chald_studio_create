@@ -5,6 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Ванила +</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1, h2 {
+            font-weight: bold;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            text-align: left;
+        }
+
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #252525;
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            background: #333;
+        }
+
+        button {
+            padding: 12px;
+            background: linear-gradient(45deg, #4caf50, #2e7d32);
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #66bb6a, #388e3c);
+        }
+
+        #responseMessage {
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -22,12 +102,46 @@
 
                 <label for="age">Ваш возраст:</label>
                 <input type="number" id="age" name="age" required>
+                
+                <label for="telegram">Ваш телеграм тег (@username):</label>
+                <input type="text" id="telegram" name="telegram" required>
 
                 <button type="submit">Отправить заявку</button>
             </form>
             <div id="responseMessage"></div>
         </main>
     </div>
-    <script src="script.js"></script>
+    
+    <script>
+        const sentApplications = new Set();
+        document.getElementById('applicationForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const nickname = document.getElementById('nickname').value;
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const telegram = document.getElementById('telegram').value;
+            
+            if (sentApplications.has(nickname)) {
+                document.getElementById('responseMessage').textContent = '❌ Вы уже отправили заявку!';
+                return;
+            }
+
+            sentApplications.add(nickname);
+            
+            const botToken = '7776157593:AAFaX3wQXT5gdSN2PgyklNe4NcLcArUuG8s';
+            const chatId = '6962439559';
+            const message = `Новая заявка!%0AНик: ${nickname}%0AИмя: ${name}%0AВозраст: ${age}%0AТелеграм: ${telegram}`;
+            const userMessage = `Спасибо за заявку, ${nickname}! Мы скоро с вами свяжемся.`;
+            
+            try {
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}`);
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${telegram}&text=${userMessage}`);
+                document.getElementById('responseMessage').textContent = '✅ Заявка успешно отправлена!';
+            } catch (error) {
+                document.getElementById('responseMessage').textContent = '❌ Ошибка при отправке заявки.';
+            }
+        });
+    </script>
 </body>
 </html>
