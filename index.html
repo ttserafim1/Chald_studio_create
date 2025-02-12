@@ -71,6 +71,22 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.6);
         }
+        .marquee {
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .marquee span {
+            display: inline-block;
+            animation: marquee 10s linear infinite;
+        }
+        @keyframes marquee {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
     </style>
 </head>
 <body>
@@ -78,6 +94,7 @@
     <div class="container">
         <h2>Подача заявки</h2>
         <button onclick="toggleForm()">Подать заявку</button>
+        <div class="marquee"><span>Наш Telegram: <a href="https://t.me/tt_serafim_1_family" target="_blank">https://t.me/tt_serafim_1_family</a></span></div>
         <div id="formContainer" class="hidden">
             <form id="applicationForm">
                 <label>Ник: <input type="text" id="nickname" required></label>
@@ -118,7 +135,7 @@
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "Markdown" })
+                body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "MarkdownV2" })
             }).then(() => {
                 document.getElementById('statusMessage').innerText = 'Заявка успешно отправлена!';
             }).catch(() => {
