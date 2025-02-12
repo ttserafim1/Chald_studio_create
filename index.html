@@ -72,24 +72,6 @@
             border-radius: 5px;
             transition: 0.3s;
         }
-
-        #video-section {
-            margin-top: 20px;
-        }
-
-        .video-container {
-            margin-top: 20px;
-            text-align: left;
-            max-width: 800px;
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .video-container h3 {
-            margin: 10px 0;
-        }
     </style>
 </head>
 <body>
@@ -114,6 +96,9 @@
                 
                 <label for="telegram">Ваш телеграм тег (@username):</label>
                 <input type="text" id="telegram" name="telegram" required>
+                
+                <label for="about">Расскажите о себе:</label>
+                <input type="text" id="about" name="about" required>
 
                 <button type="submit">Отправить заявку</button>
             </form>
@@ -121,16 +106,22 @@
         </div>
     </div>
     
-    <div id="video-section">
-        <h2>Вышедшие видео</h2>
-        <div id="videos" class="video-container">
-            <p>Информация не найдена</p>
-        </div>
-    </div>
-    
     <script>
         document.getElementById('toggleForm').addEventListener('click', function() {
             document.getElementById('formContainer').classList.toggle('hidden');
+        });
+
+        document.getElementById('applicationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('https://твой-сервер.com/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('responseMessage').innerText = data.message;
+            });
         });
     </script>
 </body>
