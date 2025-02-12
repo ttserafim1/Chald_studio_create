@@ -76,6 +76,20 @@
         #video-section {
             margin-top: 20px;
         }
+
+        .video-container {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 800px;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-container h3 {
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -109,7 +123,9 @@
     
     <div id="video-section">
         <h2>Вышедшие видео</h2>
-        <p>Информация не найдена</p>
+        <div id="videos" class="video-container">
+            <p>Информация не найдена</p>
+        </div>
     </div>
     
     <script>
